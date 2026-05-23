@@ -1,9 +1,7 @@
 import requests
 import base64
-import time
 import os
 from dotenv import load_dotenv
-from config import DEBUG
 
 load_dotenv()
 api_key = os.getenv("VT_API_KEY") or ""
@@ -74,7 +72,7 @@ def check_url_vt(ioc: str) -> dict:
                 "total_votes": attributes["total_votes"]
             }
         except Exception as e:
-                return {
+            return {
                 "ioc": ioc,
                 "error": str(e)
-                }
+            }

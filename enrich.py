@@ -2,11 +2,11 @@ import argparse
 import sys
 
 from ioc_detector import detect_ioc_type
-from enrichment.virustotal import check_hash_vt
-from enrichment.virustotal import check_url_vt
+from enrichment.virustotal import check_hash_vt, check_url_vt
+from display import display_results
 
 def parse_args(argv=None):
-    parser = argparse.ArgumentParser(description="Type URL, IP,  hash, or domain")
+    parser = argparse.ArgumentParser(description="Type URL, IP, hash, or domain")
     parser.add_argument("ioc", help="URL, IP,  hash, or domain")
     return parser.parse_args(argv)
 
@@ -34,7 +34,7 @@ def main(argv=None) -> None:
         print("Unknown IOC type")
         raise SystemExit(1)
     
-    print(result)
+    display_results(result)
 
 if __name__ == "__main__":
     main()

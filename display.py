@@ -1,95 +1,28 @@
 from typing import Optional, Any
-from pathlib import Path
-from config import DEBUG
 
-def display_results(results: dict, filename: str, hashes: list, vt_results: list, mb_results: list, score: dict) -> None:
-    print("*** Simple Email Phishing Analyzer ***")
-    print("=== File Info ===")
-    print_field("Email: ", filename)
-    print_field("Size: ", f"{Path(filename).stat().st_size} bytes")
-    print("\n=== Header Analysis ===")
-    print_field("Subject: ", results.get("subject", "N/A"))
-    print_field("From: ", results["display_name_spoof"].get("display_name", "N/A"))
-    print_field("Domain: ", results["display_name_spoof"].get("from_domain", "N/A"))
-    print_field("Reply-To: ", results["reply_to"].get("replyto_domain", "N/A"))
-    print_field("Origin Domain: " , results["received_chain"].get("origin_domain", "N/A"))
-    print_field("Hops: " , results["received_chain"].get("hops", "N/A"))
-    print("\nAuthentication")
-    print_field("   SPF: ", results.get("spf", "N/A"))
-    print_field("   DKIM: ", results.get("dkim", "N/A"))
-    print_field("   DMARC: ", results.get("dmarc", "N/A"))
-    print("\n=== Findings ===")
-    print_field("Display Name Spoof: ", verdict(results["display_name_spoof"]["spoofed"]))
-    print_field("Reply-To Mismatch: " , verdict(results["reply_to"]["mismatch"]))
-    print_field("Received Chain Mismatch: " , verdict(results["received_chain"].get("mismatch", "N/A")))
-    
-    print("\n=== URL Analysis ===")
-    if vt_results:
-        for vt_result in vt_results:
-            if vt_result.get("error") and not vt_result.get("url"):
-                print(vt_result["error"])
-            elif vt_result.get("error"):
-                print_field("URL: ", vt_result["url"])
-                print_field("Error: ", vt_result["error"])
-            else:
-                print_field("URL: ", vt_result["url"])
-                print_field("Verdict: ", url_verdict(vt_result["malicious"], vt_result["suspicious"]))
-                print_field("Malicious: ", vt_result["malicious"])
-                print_field("Suspicious: ", vt_result["suspicious"])
-    else:
-        print("No URLS found.")
+def display_results(results: dict) -> None:
+    print("*** IOC Enrichment Report ***")
+    if results.get("error"):
+        print_field("Error:", results.get("error"))
+        return
+    print_field("IOC: ", results.get("ioc"))
+    print_field("Type: ", results.get("type"))
+    print_field("Malicious: ", results.get("malicious"))
+    print_field("Suspicious: ", results.get("suspicious"))
+    print_field("Harmless: ", results.get("harmless"))
+    print_field("Reputation: ", results.get("reputation"))
 
-    print("\n=== Attachment Analysis ===")    
-    if hashes:
-        for h in hashes:
-            print_field("Filename: ", h["filename"])
-            print_field("Content-Type: ", h["content_type"])
-            print_field("MD5: ", h["md5"])
-            print_field("SHA1: ", h["sha1"])
-            print_field("SHA256: ", h["sha256"])
-    else:
-        print("No attachments found.")
+    if results.get("type") == "hash":
+        print_field("Meaningful name:", results.get("meaningful_name"))
+        print_field("File Type:", results.get("file_type"))
+    elif results.get("type") == "url":
+        print_field("Undetected: ", results.get("undetected"))
+        print_field("Final URL:", results.get("final_url"))
+        print_field("Title:", results.get("title"))
 
-    print("\n=== MalwareBazaar Analysis ===")
-    if mb_results:
-        for result in mb_results:
-            if result.get("error") and not result.get("filename"):
-                print(result["error"])
-            elif result.get("error"):
-                print_field("Filename:", result["filename"])
-                print_field("Error:", result["error"])
-            elif result["found"]:
-                print_field("Filename:", result["filename"])
-                print_field("SHA256:", result["sha256"])
-                print_field("Verdict:", "FOUND - MALICIOUS")
-                print_field("Malware Name:", result["malware_name"])
-            else:
-                print_field("Filename:", result["filename"])
-                print_field("SHA256:", result["sha256"])
-                print_field("Verdict:", "Not found in MalwareBazaar")
-    else:
-        print("No attachments to check.")
-
-    print("\n=== Score ===")
-    print_field("Verdict: ", score["verdict"])
-    print_field("Score: ", score["score"])    
-    print_field("Reasons:", ", ".join(score["reasons"]) or "None")
-
+    votes = results.get("total_votes", {})
+    print_field("Votes Harmless:", votes.get("harmless", 0))
+    print_field("Votes Malicious:", votes.get("malicious", 0))
     
 def print_field(label: str, value: Any) -> None:
     print(f"{label:<30} {value}")
-
-# Translate Spoofed and Mismatch from True/False/None to FLAGGED/CLEAN/N/A
-def verdict(value: Optional[bool]) -> str:
-    if value is True:
-        return "FLAGGED"
-    elif value is False:
-        return "CLEAN"
-    return "N/A"
-
-def url_verdict(malicious: int, suspicious: int) -> str:
-    if malicious >= 1:
-        return "MALICIOUS"
-    elif suspicious >= 1:
-        return "SUSPICIOUS"
-    return "CLEAN"
