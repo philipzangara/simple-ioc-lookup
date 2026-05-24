@@ -35,8 +35,8 @@ ABUSEIPDB_API_KEY=your_key_here
 - IOC type detection (URL, IP, hash, domain)
 - VirusTotal URL enrichment
 - VirusTotal hash enrichment
-- AbuseIPDB IP enrichment (coming soon)
-- Domain enrichment (coming soon)
+- AbuseIPDB IP enrichment 
+- Domain enrichment
 
 ## Sample Data
 Test IOCs sourced from: https://www.virustotal.com
