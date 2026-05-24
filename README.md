@@ -46,14 +46,18 @@ ABUSEIPDB_API_KEY=your_key_here
 **Hash Lookup**
 ![Hash Lookup](assets/hash_lookup.jpg)
 
+
 **URL Lookup**
 ![URL Lookup](assets/url_lookup.jpg)
+
 
 **IP Lookup**
 ![IP Lookup](assets/ip_lookup.jpg)
 
+
 **Domain Lookup**
 ![Domain Lookup](assets/domain_lookup.jpg)
+
 
 ## Sample Data
 Test IOCs sourced from publicly available phishing and malware feeds.
