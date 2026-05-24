@@ -11,6 +11,14 @@ Linux/Mac:
 ```
 python3 enrich.py <ioc>
 ```
+JSON output:
+```
+python enrich.py <ioc> --output json
+```
+Pipe to file::
+```
+python enrich.py <ioc> --output json > result.json
+```
 
 Tested using Python 3.10.11
 
