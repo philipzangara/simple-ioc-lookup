@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from enrichment.virustotal import check_hash_vt
+from enrichment.whois_check import check_whois
 
 class TestCheckHashVt(unittest.TestCase):
 
@@ -42,6 +43,14 @@ class TestCheckHashVt(unittest.TestCase):
         mock_get.return_value = mock_response
         result = check_hash_vt("fakehash123")
         self.assertIn("error", result)
+class TestCheckWhois(unittest.TestCase):
+
+    @patch('enrichment.whois_check.whois.whois')
+    def test_whois_error_returns_error_dict(self, mock_whois):
+        mock_whois.side_effect = Exception("Connection timeout")
+        result = check_whois("malicious.com")
+        self.assertIn("error", result)
+        self.assertEqual(result["error"], "Connection timeout")
 
 if __name__ == "__main__":
     unittest.main()
