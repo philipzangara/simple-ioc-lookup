@@ -76,3 +76,33 @@ def check_url_vt(ioc: str) -> dict:
                 "ioc": ioc,
                 "error": str(e)
             }
+        
+def check_domain_vt(ioc: str) -> dict:
+
+    if not api_key:
+        return {"error": "No VT API key found in .env"}
+
+    headers = {"x-apikey": api_key}
+    try:
+        get_response = requests.get(f"https://www.virustotal.com/api/v3/domains/{ioc}", 
+                        headers=headers) # type: ignore
+        response = get_response.json()
+        attributes = response["data"]["attributes"]
+        stats = attributes["last_analysis_stats"]
+        return {
+            "ioc": ioc,
+            "type": "domain",
+            "malicious": stats["malicious"],
+            "suspicious": stats["suspicious"],
+            "harmless": stats["harmless"],
+            "reputation": attributes["reputation"],
+            "registrar": attributes.get("registrar", "Unknown"),
+            "creation_date": attributes.get("creation_date"),
+            "expiration_date": attributes.get("expiration_date"),
+            "categories": attributes.get("categories", {}),
+            "popularity_ranks": attributes.get("popularity_ranks", {}),
+            "total_votes": attributes["total_votes"]
+        }
+    except Exception as e:
+        return {"error": str(e)}
+

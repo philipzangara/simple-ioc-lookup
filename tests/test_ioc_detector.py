@@ -24,5 +24,16 @@ class TestDetectIocType(unittest.TestCase):
     def test_domain(self):
         self.assertEqual(detect_ioc_type("malicious.com"), "domain")
 
+class TestInvalidIoc(unittest.TestCase):
+    
+    def test_gibberish_returns_unknown(self):
+        self.assertEqual(detect_ioc_type("asdfgh"), "unknown")
+
+    def test_no_tld_returns_unknown(self):
+        self.assertEqual(detect_ioc_type("notadomain"), "unknown")
+
+    def test_number_only_returns_unknown(self):
+        self.assertEqual(detect_ioc_type("12345"), "unknown")
+
 if __name__ == "__main__":
     unittest.main()

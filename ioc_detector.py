@@ -1,5 +1,6 @@
 import ipaddress
 import re
+import tldextract
 
 def detect_ioc_type(ioc: str) -> str:
 
@@ -26,4 +27,8 @@ def detect_ioc_type(ioc: str) -> str:
     elif is_hex and len(ioc) == 64:
         return "sha256"
     else:
-        return "domain"
+        # check if domain is valid, else return unknown IOC
+        extract = tldextract.extract(ioc)
+        if extract.domain and extract.suffix:
+            return "domain"
+        return "unknown"
