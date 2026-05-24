@@ -4,7 +4,7 @@ from helpers import print_field, vt_verdict, ip_verdict
 
 def display_results(results: dict) -> None:
     
-    print("*** IOC Enrichment Report ***")
+    print("=== Simple IOC Lookup ===")
     if results.get("error"):
         print_field("Error: ", results.get("error"))
         return
@@ -34,7 +34,17 @@ def display_results(results: dict) -> None:
         print_field("Reputation: ", results.get("reputation"))
         print_field("Undetected: ", results.get("undetected"))
         print_field("Votes Malicious: ", votes.get("malicious", 0))
-        print_field("Votes Harmless: ", votes.get("harmless", 0))        
+        print_field("Votes Harmless: ", votes.get("harmless", 0)) 
+        whois = results.get("whois", {})
+        print_field("Registrar (WHOIS): ", whois.get("registrar", "Unknown"))
+        org = whois.get("org")
+        print_field("Org:", org[0] if isinstance(org, list) else org or "Unknown")
+        print_field("Country: ", whois.get("country", "Unknown"))
+        created = whois.get("creation_date")
+        print_field("Created: ", created.strftime('%Y-%m-%d') if created else "Unknown")
+        expiration = whois.get("expiration_date")
+        print_field("Expires: ", expiration.strftime('%Y-%m-%d') if expiration else "Unknown")
+        print_field("Name Servers: ", ", ".join(whois.get("name_servers", [])))      
     elif results.get("type") == "ip":
         print_field("IOC: ", results.get("ioc"))
         print_field("Type: ", results.get("type"))
@@ -65,4 +75,14 @@ def display_results(results: dict) -> None:
         print_field("Popularity Ranks: ", ", ".join(results.get("popularity_ranks", {}).keys()))
         print_field("Votes Malicious: ", votes.get("malicious", 0))
         print_field("Votes Harmless: ", votes.get("harmless", 0))
+        whois = results.get("whois", {})
+        print_field("Registrar (WHOIS): ", whois.get("registrar", "Unknown"))
+        org = whois.get("org")
+        print_field("Org:", org[0] if isinstance(org, list) else org or "Unknown")
+        print_field("Country: ", whois.get("country", "Unknown"))
+        created = whois.get("creation_date")
+        print_field("Created: ", created.strftime('%Y-%m-%d') if created else "Unknown")
+        expiration = whois.get("expiration_date")
+        print_field("Expires: ", expiration.strftime('%Y-%m-%d') if expiration else "Unknown")
+        print_field("Name Servers: ", ", ".join(whois.get("name_servers", [])))
              
