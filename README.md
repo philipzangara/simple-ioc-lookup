@@ -44,19 +44,19 @@ ABUSEIPDB_API_KEY=your_key_here
 ## Sample Output
 
 **Hash Lookup**
-![Hash Lookup](assets/hash_lookup.jpg)
+![Hash Lookup](assets/hash_lookup.png)
 
 
 **URL Lookup**
-![URL Lookup](assets/url_lookup.jpg)
+![URL Lookup](assets/url_lookup.png)
 
 
 **IP Lookup**
-![IP Lookup](assets/ip_lookup.jpg)
+![IP Lookup](assets/ip_lookup.png)
 
 
 **Domain Lookup**
-![Domain Lookup](assets/domain_lookup.jpg)
+![Domain Lookup](assets/domain_lookup.png)
 
 
 ## Sample Data
