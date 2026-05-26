@@ -4,7 +4,7 @@ from helpers import print_field, vt_verdict, ip_verdict
 
 def display_results(results: dict) -> None:
     
-    print("=== Simple IOC Lookup ===")
+    print("=== Simple IOC Lookup v1.0.0 ===")
     if results.get("error"):
         print_field("Error: ", results.get("error"))
         return

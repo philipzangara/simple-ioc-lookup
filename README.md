@@ -97,6 +97,9 @@ Test IOCs sourced from publicly available phishing and malware feeds.
 - Type checked with mypy
 - Unit tested with unittest
 
+## Version
+1.0.0
+
 ## Author: Philip Zangara
 
 ## License: MIT
