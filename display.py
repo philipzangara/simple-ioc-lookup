@@ -4,7 +4,7 @@ from helpers import print_field, vt_verdict, ip_verdict, print_otx
 
 def display_results(results: dict) -> None:
     
-    print("=== Simple IOC Lookup v1.1.0 ===")
+    print("=== Simple IOC Lookup v1.1.1 ===")
     if results.get("error"):
         print_field("Error:", results.get("error"))
     if results.get("type") == "hash":

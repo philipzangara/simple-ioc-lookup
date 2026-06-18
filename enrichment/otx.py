@@ -26,7 +26,8 @@ def check_otx(ioc: str, ioc_type: str) -> dict:
 
     headers = {"X-OTX-API-KEY": api_key}
     try:
-        get_response = requests.get(...)
+        get_response = requests.get(f"https://otx.alienvault.com/api/v1/indicators/{otx_type}/{ioc}/general", 
+                                    headers=headers) # type: ignore
         response = get_response.json()
         return {
             "ioc": ioc,
