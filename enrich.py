@@ -6,6 +6,7 @@ from ioc_detector import detect_ioc_type
 from enrichment.virustotal import check_hash_vt, check_url_vt, check_domain_vt
 from enrichment.abuseipdb import check_ip_abuseipdb
 from enrichment.whois_check import check_whois
+from enrichment.otx import check_otx
 from display import display_results
 
 def parse_args(argv=None):
@@ -26,17 +27,27 @@ def main(argv=None) -> None:
         domain = extract.domain + "." + extract.suffix
         whois_result = check_whois(domain)
         result = {**result, "whois": whois_result}
+        otx_result = check_otx(ioc, ioc_type)
+        result = {**result, "otx": otx_result}
     # call abuseipdb + whois
     elif ioc_type == "ip":
         result = check_ip_abuseipdb(ioc)
+        otx_result = check_otx(ioc, ioc_type)
+        result = {**result, "otx": otx_result}
     # call virustotal hash lookup
     elif ioc_type in ["md5", "sha1", "sha256"]:
         result = check_hash_vt(ioc)
+        result["ioc"] = result.get("ioc", ioc)
+        result["type"] = result.get("type", "hash")
+        otx_result = check_otx(ioc, ioc_type)
+        result = {**result, "otx": otx_result}
     # call virustotal domain lookup + whois
     elif ioc_type == "domain":
         result = check_domain_vt(ioc)
         whois_result = check_whois(ioc)
         result = {**result, "whois": whois_result}
+        otx_result = check_otx(ioc, ioc_type)
+        result = {**result, "otx": otx_result}
     else:
         print("Unknown IOC type")
         raise SystemExit(1)

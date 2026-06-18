@@ -20,6 +20,8 @@ def check_hash_vt(ioc: str) -> dict:
         response = get_response.json()
         attributes = response["data"]["attributes"]
         stats = attributes["last_analysis_stats"]
+    except KeyError:
+        return {"error": "Hash not found in VirusTotal database"}
     except Exception as e:
         return {"error": str(e)}
     

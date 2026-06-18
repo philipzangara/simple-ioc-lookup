@@ -16,3 +16,10 @@ def ip_verdict(abuse_score: int) -> str:
     elif abuse_score >= 25:
         return "SUSPICIOUS"
     return "CLEAN"
+
+def print_otx(results: dict) -> None:
+    otx = results.get("otx", {})
+    print_field("OTX Pulse Count:", otx.get("pulse_count", "Unknown"))
+    print_field("OTX Malware Families:", ", ".join(otx.get("malware_families", [])) or "None")
+    print_field("OTX Adversaries:", ", ".join(otx.get("adversaries", [])) or "None")
+    print_field("OTX Validation:", ", ".join(otx.get("validation", [])) or "None")
