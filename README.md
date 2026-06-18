@@ -32,16 +32,19 @@ pip install -r requirements.txt
 This tool uses the following free APIs:
 - VirusTotal: https://www.virustotal.com (free account required)
 - AbuseIPDB: https://www.abuseipdb.com (free account required)
+- AlienVault OTX: https://otx.alienvault.com (free account recommended)
 
 **Note: VirusTotal free tier is limited to 4 requests per minute. Allow 15 seconds between lookups to avoid rate limiting.**
 
 
-URL and hash analysis will be skipped if keys are not present.
+URL and hash analysis will be skipped if keys are not present. OTX enrichment will be skipped if OTX_API_KEY is not present.
+
 
 Add keys to a `.env` file in the project directory:
 ```
 VT_API_KEY=your_key_here
 ABUSEIPDB_API_KEY=your_key_here
+OTX_API_KEY=your_key_here
 ```
 
 ## Features
@@ -51,6 +54,7 @@ ABUSEIPDB_API_KEY=your_key_here
 - AbuseIPDB IP enrichment
 - Domain enrichment
 - WHOIS lookup for domain and URL IOC types
+- AlienVault OTX enrichment for all IOC types (pulse count, malware families, adversary associations)
 
 ## Sample Output
 
@@ -75,10 +79,10 @@ ABUSEIPDB_API_KEY=your_key_here
 
 | IOC Type | APIs Used |
 |----------|-----------|
-| URL      | VirusTotal, WHOIS |
-| IP       | AbuseIPDB |
-| Hash     | VirusTotal |
-| Domain   | VirusTotal, WHOIS |
+| URL      | VirusTotal, WHOIS, OTX |
+| IP       | AbuseIPDB, OTX |
+| Hash     | VirusTotal, OTX |
+| Domain   | VirusTotal, WHOIS, OTX |
 
 ## MITRE ATT&CK
 
@@ -98,7 +102,7 @@ Test IOCs sourced from publicly available phishing and malware feeds.
 - Unit tested with unittest
 
 ## Version
-1.0.0
+1.1.0
 
 ## Author: Philip Zangara
 
