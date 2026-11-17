@@ -1,111 +1,144 @@
-## Simple IOC Lookup
+# Simple IOC Lookup
 
-A Python-based IOC enrichment tool that performs automated triage of IPs, domains, URLs, and file hashes.
+[![MyPy](https://github.com/philipzangara/simple-ioc-lookup/actions/workflows/mypy.yml/badge.svg)](https://github.com/philipzangara/simple-ioc-lookup/actions/workflows/mypy.yml)
+
+A Python-based IOC enrichment tool that performs automated triage of IP addresses, domains, URLs, and file hashes using multiple threat intelligence providers.
+
+## Features
+
+- Automatic IOC type detection (IP, domain, URL, hash)
+- VirusTotal URL enrichment
+- VirusTotal hash enrichment
+- AbuseIPDB IP reputation analysis
+- Domain enrichment
+- WHOIS lookup for domain and URL IOCs
+- AlienVault OTX enrichment
+- JSON output support
+- Automated static type checking with MyPy
+- Continuous Integration with GitHub Actions
+
+## Code Quality
+
+This project follows modern software engineering practices:
+
+-  Static type checking with MyPy
+- Automated CI/CD using GitHub Actions
+- Type validation on every push and pull request
+- Unit testing with unittest
+- Python 3.10 support
 
 ## Usage
-Windows:
-```
+
+### Windows
+
+```bash
 python enrich.py <ioc>
 ```
-Linux/Mac:
-```
+
+### Linux / macOS
+
+```bash
 python3 enrich.py <ioc>
 ```
-JSON output:
-```
+
+### JSON Output
+
+```bash
 python enrich.py <ioc> --output json
 ```
-Pipe to file:
-```
+
+### Save Output to File
+
+```bash
 python enrich.py <ioc> --output json > result.json
 ```
 
-Tested using Python 3.10.11
-
 ## Requirements
-```
+
+```bash
 pip install -r requirements.txt
 ```
 
+Tested with Python 3.10.11.
+
 ## API Keys
 
-This tool uses the following free APIs:
-- VirusTotal: https://www.virustotal.com (free account required)
-- AbuseIPDB: https://www.abuseipdb.com (free account required)
-- AlienVault OTX: https://otx.alienvault.com (free account recommended)
+This tool uses the following free services:
 
-**Note: VirusTotal free tier is limited to 4 requests per minute. Allow 15 seconds between lookups to avoid rate limiting.**
+- VirusTotal (free account required)
+- AbuseIPDB (free account required)
+- AlienVault OTX (free account recommended)
 
+**Note:** VirusTotal's free tier is limited to four requests per minute. Allow approximately 15 seconds between lookups to avoid rate limiting.
 
-URL and hash analysis will be skipped if keys are not present. OTX enrichment will be skipped if OTX_API_KEY is not present.
+Place API keys in a `.env` file:
 
-
-Add keys to a `.env` file in the project directory:
-```
+```env
 VT_API_KEY=your_key_here
 ABUSEIPDB_API_KEY=your_key_here
 OTX_API_KEY=your_key_here
 ```
 
-## Features
-- IOC type detection (URL, IP, hash, domain)
-- VirusTotal URL enrichment
-- VirusTotal hash enrichment
-- AbuseIPDB IP enrichment
-- Domain enrichment
-- WHOIS lookup for domain and URL IOC types
-- AlienVault OTX enrichment for all IOC types (pulse count, malware families, adversary associations)
+If a key is missing, the corresponding enrichment source is automatically skipped.
+
+## How It Works
+
+1. Detects the IOC type automatically.
+2. Selects the appropriate enrichment providers.
+3. Performs threat intelligence lookups.
+4. Collects and normalizes enrichment data.
+5. Returns a verdict based on detections, reputation scores, and threat intelligence context.
+
+| IOC Type | Sources |
+|-----------|----------|
+| URL | VirusTotal, WHOIS, OTX |
+| IP | AbuseIPDB, OTX |
+| Hash | VirusTotal, OTX |
+| Domain | VirusTotal, WHOIS, OTX |
+
+## MITRE ATT&CK Mapping
+
+- T1566 – Phishing
+- T1071 – Application Layer Protocol
+- T1204 – User Execution
+- T1190 – Exploit Public-Facing Application
 
 ## Sample Output
 
 **Hash Lookup**
+
 ![Hash Lookup](assets/hash_lookup.png)
 
 **URL Lookup**
+
 ![URL Lookup](assets/url_lookup.png)
 
 **IP Lookup**
-![IP Lookup](assets/ip_lookup.png)  
+
+![IP Lookup](assets/ip_lookup.png)
 
 **Domain Lookup**
+
 ![Domain Lookup](assets/domain_lookup.png)
 
-## How It Works
-
-1. Detects the IOC type automatically (URL, IP, hash, or domain)
-2. Routes to the appropriate enrichment APIs based on type
-3. URL and domain lookups include WHOIS registration data
-4. Returns a verdict based on vendor detections and abuse scores
-
-| IOC Type | APIs Used |
-|----------|-----------|
-| URL      | VirusTotal, WHOIS, OTX |
-| IP       | AbuseIPDB, OTX |
-| Hash     | VirusTotal, OTX |
-| Domain   | VirusTotal, WHOIS, OTX |
-
-## MITRE ATT&CK
-
-This tool supports investigation of the following techniques:
-
-- T1566 — Phishing (URL and domain triage)
-- T1071 — Application Layer Protocol (domain and URL analysis)
-- T1204 — User Execution (malicious hash identification)
-- T1190 — Exploit Public-Facing Application (IP reputation lookup)
-
-
 ## Sample Data
-Test IOCs sourced from publicly available phishing and malware feeds.
 
-## Code Quality
-- Type checked with mypy
-- Unit tested with unittest
+Test IOCs are sourced from publicly available phishing and malware intelligence feeds.
 
 ## Version
+
 1.1.0
 
-## Author: Philip Zangara
+## Author
 
-## License: MIT
+Philip Zangara
 
-Disclaimer: Built independently, with AI used as a learning aid for guidance and debugging feedback.
+## License
+
+MIT
+
+---
+
+## Purpose
+
+This project was developed as part of a personal cybersecurity portfolio to strengthen skills in threat intelligence enrichment, Python development, software engineering, and security tooling.
