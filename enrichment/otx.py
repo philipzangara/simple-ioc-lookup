@@ -24,10 +24,10 @@ def check_otx(ioc: str, ioc_type: str) -> dict:
     if not otx_type:
         return {"error": f"Unsupported IOC type for OTX: {ioc_type}"}
 
-    headers = {"X-OTX-API-KEY": api_key}
+    headers = {"X-OTX-API-KEY": api_key} 
     try:
         get_response = requests.get(f"https://otx.alienvault.com/api/v1/indicators/{otx_type}/{ioc}/general", 
-                                    headers=headers) # type: ignore
+                                    headers=headers) # type: ignore[arg-type]
         response = get_response.json()
         return {
             "ioc": ioc,

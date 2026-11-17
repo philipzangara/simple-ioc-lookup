@@ -1,4 +1,5 @@
-import whois # type: ignore
+import whois 
+from collections.abc import MutableMapping
 
 def check_whois(ioc: str) -> dict:
     

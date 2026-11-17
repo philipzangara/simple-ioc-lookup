@@ -13,10 +13,10 @@ def check_hash_vt(ioc: str) -> dict:
     if not api_key:
         return {"error": "No VT API key found in .env"}
 
-    headers = {"x-apikey": api_key}
+    headers = {"x-apikey": api_key} 
     try:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/files/{ioc}", 
-                        headers=headers) # type: ignore
+                        headers=headers) # type: ignore[arg-type]
         response = get_response.json()
         attributes = response["data"]["attributes"]
         stats = attributes["last_analysis_stats"]
@@ -47,17 +47,17 @@ def check_url_vt(ioc: str) -> dict:
 
     ioc_id = base64.urlsafe_b64encode(ioc.encode()).decode().rstrip('=')
 
-    headers = {"x-apikey": api_key}    
+    headers = {"x-apikey": api_key} 
     # VT URL endpoint requires form data, not JSON
     data = {"url": ioc} 
     post_response = requests.post("https://www.virustotal.com/api/v3/urls", 
-                              headers=headers, data=data) # type: ignore
+                              headers=headers, data=data) # type: ignore[arg-type]
 
     if post_response.status_code != 200:
         return {"ioc": ioc, "error": f"POST failed: {post_response.status_code}"}
     else:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/urls/{ioc_id}", 
-                            headers=headers) # type: ignore
+                            headers=headers) # type: ignore[arg-type]
         try:
             response = get_response.json()
             attributes = response["data"]["attributes"]
@@ -88,7 +88,7 @@ def check_domain_vt(ioc: str) -> dict:
     headers = {"x-apikey": api_key}
     try:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/domains/{ioc}", 
-                        headers=headers) # type: ignore
+                        headers=headers) # type: ignore[arg-type]
         response = get_response.json()
         attributes = response["data"]["attributes"]
         stats = attributes["last_analysis_stats"]
