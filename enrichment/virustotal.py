@@ -16,7 +16,7 @@ def check_hash_vt(ioc: str) -> dict:
     headers = {"x-apikey": api_key} 
     try:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/files/{ioc}", 
-                        headers=headers) # type: ignore[arg-type]
+                        headers=headers)
         response = get_response.json()
         attributes = response["data"]["attributes"]
         stats = attributes["last_analysis_stats"]
@@ -51,13 +51,13 @@ def check_url_vt(ioc: str) -> dict:
     # VT URL endpoint requires form data, not JSON
     data = {"url": ioc} 
     post_response = requests.post("https://www.virustotal.com/api/v3/urls", 
-                              headers=headers, data=data) # type: ignore[arg-type]
+                              headers=headers, data=data) 
 
     if post_response.status_code != 200:
         return {"ioc": ioc, "error": f"POST failed: {post_response.status_code}"}
     else:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/urls/{ioc_id}", 
-                            headers=headers) # type: ignore[arg-type]
+                            headers=headers) 
         try:
             response = get_response.json()
             attributes = response["data"]["attributes"]
@@ -88,7 +88,7 @@ def check_domain_vt(ioc: str) -> dict:
     headers = {"x-apikey": api_key}
     try:
         get_response = requests.get(f"https://www.virustotal.com/api/v3/domains/{ioc}", 
-                        headers=headers) # type: ignore[arg-type]
+                        headers=headers) 
         response = get_response.json()
         attributes = response["data"]["attributes"]
         stats = attributes["last_analysis_stats"]
